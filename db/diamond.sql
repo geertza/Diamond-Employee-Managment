@@ -5,17 +5,17 @@ CREATE DATABASE diamond_db;
 USE diamond_db;
 
 CREATE TABLE department (
-id INT AUTO_INCREMENT NOT NULL,
-name VARCHAR(30) NOT NULL,
-PRIMARY KEY(id)
+department_id INT AUTO_INCREMENT NOT NULL,
+department VARCHAR(30) NOT NULL,
+PRIMARY KEY(department_id)
 );
 
 CREATE TABLE role (
-id INT AUTO_INCREMENT NOT NULL,
+role_id INT AUTO_INCREMENT NOT NULL,
 title VARCHAR(30) NOT NULL,
 salary DECIMAL NOT NULL,
 department_id INT NOT NULL,
-PRIMARY KEY(id)
+PRIMARY KEY(role_id)
 );
 
 CREATE TABLE employee (

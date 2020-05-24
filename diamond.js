@@ -14,7 +14,8 @@ var connection = mysql.createConnection({
 
   connection.connect(function(err) {
     if (err) throw err;
-    Start()
+    
+     Start()
   });
   const logo = require('asciiart-logo');
 
@@ -27,9 +28,7 @@ console.log(
     })
     .render()
 );
-
-
-  function Start(){
+function Start(){
     inquirer
     .prompt(
         {
@@ -44,7 +43,7 @@ console.log(
                 viewEmp();
                 break;
             case 'view':
-                viewList();
+                return x="boi";
                 break;
             case 'update':
                 update();
@@ -55,39 +54,95 @@ console.log(
             case 'exit':
                 connection.end()
                 return;
-        }
-    })
-}
-  
-  function viewEmp(){
-    inquirer
+        }})}
+        
+
+       
+         function viewEmp(){
+            inquirer
+            .prompt(
+                {
+                    name: 'viewChoice',
+                    type: 'list',
+                    message: 'choose',
+                    choices: ['all', 'by department', 'by Manager'],
+                }
+            ).then( function ({ viewChoice }) {
+                switch (viewChoice) {
+                    case 'all':   
+                    {connection.query(`SELECT * FROM diamond_db.employee;`, function (err,data) {
+                        if (err) throw err;
+                        console.table(data);
+                        Mod()
+                            });};
+                    
+                     
+                        break;
+                    case 'by department':
+                        
+                        inquirer.prompt({
+                            name:"dept",
+                            type: "number",
+                            message:'Department #',
+                        }).then(function ({ dept }) {
+                            connection.query(`SELECT employee.id,employee.first_name,employee.last_name, department.department,department.department_id 
+                            FROM employee join role ON employee.role_id = role.role_id
+                            join department ON role.department_id = department.department_id
+                            where department.department_id = ${dept};`, function (err,data) {
+                                if (err) throw err;
+                                console.table(data);
+                            Mod()
+                        })});
+                        break;
+                        case 'by Manager':
+                        inquirer.prompt({
+                            name:"man",
+                            type: "number",
+                            message:'manager #',
+                        }).then(function ({ man }) {
+                            connection.query(`SELECT * FROM diamond_db.employee
+                            where manager_id = ${man};`, function (err,data) {
+                                if (err) throw err;
+                                console.table(data);
+                                Mod();    
+                        });})
+            }})}
+        
+
+          
+function Mod(){inquirer
     .prompt(
         {
-            name: 'viewChoice',
+            name: 'employeeModify',
             type: 'list',
-            message: 'choose',
-            choices: ['all', 'by department', 'by Manager'],
+            message: 'Would you like to modify or Delete an Employee?',
+            choices: ['Modify','Delete','No, return to main menu'],
         }
-    ).then(function ({ viewChoice }) {
-        switch (viewChoice) {
-            case 'all':
-            console.log("all choosen") ;   
-            seeAll();
-                break;
-            case 'by department':
-                viewList();
-                break;
-            case 'by Manager':
-                update();
-                break;
+    ).then(function ({employeeModify}) {
+        switch(employeeModify) {
+            case 'Modify':
+              // code block
+              break;
+            case 'Delete':  inquirer.prompt({
+                name:"empNumber",
+                type: "number",
+                message:'Employee #',
+            }).then(function ({ empNumber }) {
+                display(`delete from employee
+                where id =${empNumber};`);
+                console.log(`employee Id=${empNumber} deleted`);
+                Start()}); 
+              break;
+            default:
+              Start();
+            }})}
 
-  }})}
+  
 
-  function seeAll() {connection.query(`SELECT * FROM diamond_db.employee;`, function (err,data) {
-    
+  async function display(x) {connection.query(x, function (err,data) {
     if (err) throw err;
-    console.table(data)
-            getJob();
-        
-            });
-         };
+    console.table(data);
+        });};
+
+
+      module.exports = {display}

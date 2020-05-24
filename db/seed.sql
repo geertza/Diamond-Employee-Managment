@@ -1,5 +1,5 @@
 INSERT INTO department
-  (name)
+  (department)
 VALUES
   ('andriods'),
   ('slaves'),
@@ -25,6 +25,7 @@ VALUES
   ('IAM', 'God', 2, 4),
   ('Sarah', 'Lee', 3, 5),
   ('don', 'parker', 3, 6),
-  ('Mel', 'Loewe', 2, 7),
-  ('Joe', 'Dee', 4, 8);
+  ('Mel', 'Lowe', 2, 7),
+  ('Joe', 'Dee', 4, 8),
+  ('major','Pain',5,3);
   
