@@ -31,17 +31,6 @@ class Employee {
 
 
 
-    // In addition to `Employee`'s properties and methods, `Engineer` will also have:
-class modifyEmployee extends Employee {
-    constructor(id,first,last, role, manager) {
-      super(first,last, role, manager)
+ 
 
-      this.id = id;
-      this.questions = [...this.Questions, 
-        {
-          type: "input",
-          message: "Employee id #?",
-          name: "id"
-      }]}}
-
-      module.exports = {Employee,modifyEmployee}
+      module.exports = {Employee}

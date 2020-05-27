@@ -22,7 +22,7 @@ VALUES
   ('Richard', 'Rausch', 1, 1),
   ('peter', 'Small', 3, 2),
   ('Mike', 'Hunt', 2, 3),
-  ('IAM', 'God', 2, 4),
+  ('IAM', 'Gawd', 2, 4),
   ('Sarah', 'Lee', 3, 5),
   ('don', 'parker', 3, 6),
   ('Mel', 'Lowe', 2, 7),

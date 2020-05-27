@@ -24,7 +24,6 @@ inquirer.prompt(  {
     type: 'number',
     message: 'Employee #?',
 }).then (answers => {
-    console.log(main.Start)
     id=answers.number
     connection.query(`SELECT * FROM employee
     where id=${id}`,(err, results) => {
@@ -81,7 +80,7 @@ inquirer.prompt(  {
                       break;
                     default:
                         
-                    return x;
+                   console.log(main);
                   }
             })
     
