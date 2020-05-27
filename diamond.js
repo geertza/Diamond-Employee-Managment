@@ -38,7 +38,7 @@ function Start(){
             name: 'main',
             type: 'list',
             message: 'Employee management function?',
-            choices: ['View/modify/delete Employees', 'Add employee', 'add/delete roles', 'add/delete Manager', 'exit'],
+            choices: ['View/modify/delete Employees', 'Add employee', 'add/delete roles', 'add/delete Department', 'exit'],
         }
     ).then(function ({ main }) {
         switch (main) {
@@ -63,8 +63,8 @@ function Start(){
             case 'add/delete roles':
                 roles();
                 break;
-            case 'delete':
-                deleteList();
+            case 'add/delete Department':
+                department();
                 break;
             case 'exit':
                 connection.end()
@@ -266,3 +266,38 @@ function roles(){
                   Start();
               }
         })}
+
+
+
+        function department(){
+            connection.query(`SELECT * FROM department;`,
+             function (err,data) { if (err) throw err;
+                console.table(data);})
+                inquirer.prompt({name:"roleOptions",type:"list",message:"Add or Delete",choices:['Add','Delete','Return to Main menu!']})
+                .then(function(answers){
+                    switch(answers.roleOptions) {
+                        case 'Add':
+                            const tempRole = new addEmp.role;    
+                            inquirer.prompt({name:"name",type:"input",message:"Depaartment Name?"})
+                                .then(answers => {
+                                  {connection.query(`INSERT INTO department(department) VALUES('${answers.name}');`,
+                                   function (err,data) {
+                                    if (err) throw err;
+                                    console.table(data);;
+                                    Start()
+                                })}})
+                          break;
+                        case "Delete":
+                            inquirer.prompt({name:'delRole',type:'input',message:'Department id you wish to delete'})
+                            .then(answers => {
+                              {connection.query(`DELETE  FROM department WHERE department_id = '${answers.delRole.trim()}';`,
+                               function (err,data) {
+                                if (err) throw err;
+                                console.table(data);;
+                                Start()
+                            })}})
+                          break;
+                        default:
+                          Start();
+                      }
+                })}
