@@ -13,14 +13,14 @@ var connection = mysql.createConnection({
     password: "password",
     database: "diamond_Db"
   });
-
+//  connection promise------------------------
   connection.connect(function(err) {
     if (err) throw err;
     
      Start()
   });
   const logo = require('asciiart-logo');
-
+//type set logo
 console.log(
     logo({
         name: '<> Diamond <>',
@@ -30,6 +30,7 @@ console.log(
     })
     .render()
 );
+// cli prompt to start the process
 function Start(){
     inquirer
     .prompt(
@@ -41,22 +42,26 @@ function Start(){
         }
     ).then(function ({ main }) {
         switch (main) {
-            case 'View Employees':
+            case 'View/modify/delete Employees':
                 viewEmp();
                 break;
             case 'Add employee':
-                const tempEmployee = new addEmp;
+            // ask questions to generate new employee    
+            const tempEmployee = new addEmp.Employee;
                 inquirer
-                    .prompt(tempIntern.questions)
+                    .prompt(tempEmployee.Questions)
                     .then(answers => {
-                      const {name, id, email, school} = answers
-                      layout += intern.intern(name, id, email,school);
+                      const {first,last, role, manager} = answers
+                      {connection.query(`INSERT INTO employee(first_name,last_name, role_id, manager_id)
+                      VALUES('${first}','${last}',${role},${manager});;`, function (err,data) {
+                        if (err) throw err;
+                        console.table(data);;
                         
-                       mainQuestionStr()
-                       });
+                       Start()
+                    })}})
                 break;
-            case 'update':
-                update();
+            case 'add/delete roles':
+                roles();
                 break;
             case 'delete':
                 deleteList();
@@ -119,7 +124,7 @@ function Start(){
             }})}
         
 
-          
+   // function to modify/delete employees       
 function Mod(){inquirer
     .prompt(
         {
@@ -154,9 +159,7 @@ function Mod(){inquirer
     console.table(data);
         });};
 
-module.exports =function test(){
-    Start()
-}
+// modify employees---------------------
 let id =""
 function modifyEmployeeTable(x){
 inquirer.prompt(  {
@@ -228,3 +231,38 @@ inquirer.prompt(  {
          }})
 })
 }
+
+// add/delete roles  ------------------------------
+function roles(){
+    connection.query(`SELECT * FROM role;`,
+     function (err,data) { if (err) throw err;
+        console.table(data);})
+        inquirer.prompt({name:"roleOptions",type:"list",message:"Add or Delete",choices:['Add','Delete','Return to Main menu!']})
+        .then(function(answers){
+            switch(answers.roleOptions) {
+                case 'Add':
+                    const tempRole = new addEmp.role;    
+                    inquirer.prompt(tempRole.Questions)
+                        .then(answers => {
+                          const {title,salary,department} = answers
+                          {connection.query(`INSERT INTO role(title,salary, department_id) VALUES('${title}','${salary}','${department}');`,
+                           function (err,data) {
+                            if (err) throw err;
+                            console.table(data);;
+                            Start()
+                        })}})
+                  break;
+                case "Delete":
+                    inquirer.prompt({name:'delRole',type:'input',message:'Role id you wish to delete'})
+                    .then(answers => {
+                      {connection.query(`DELETE  FROM role WHERE role_id = '${answers.delRole.trim()}';`,
+                       function (err,data) {
+                        if (err) throw err;
+                        console.table(data);;
+                        Start()
+                    })}})
+                  break;
+                default:
+                  Start();
+              }
+        })}

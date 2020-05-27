@@ -1,5 +1,5 @@
 class Employee {
-    // Create a constructor for employee with agruments first_name,last_name, role_id , manager_id 
+    // Create a constructor for employee with agruments first_name,last_name, role_id , department_id 
     constructor(first,last, role, manager){
         // Add the properities name, id, title, email
         this.first = first;
@@ -28,9 +28,34 @@ class Employee {
             }
         ]
     }}
-
+    class role {
+        // Create a constructor for role
+        constructor(title,salary, role, department){
+            // Add the properities title, id, title, email
+            this.title = title;
+            this.salary = salary;
+            this.role = role;
+            this.department = department
+            this.Questions = [
+                {
+                    type: "input",
+                    message: "New title?",
+                    name: "title"
+                },
+                {
+                    type: "input",
+                    message: "Salary?",
+                    name: "salary"
+                },{
+                    type: "input",
+                    message: "department Id?",
+                    name: "department"
+                }
+            ]
+        }}
+    
 
 
  
 
-      module.exports = {Employee}
+      module.exports = {Employee,role}
